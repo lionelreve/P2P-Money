@@ -10,7 +10,7 @@ public class ChordNode {
 	private ChordKey chordKey = null;
 	private ArrayList<ChordNode> myNodes = null;
 	private ChordNode predecessor = null;
-	private ChordNode succesor= null;
+	private ChordNode successor= null;
 	private FingerTable fingerTable= null;
 	
 	public String getNodeId(){
@@ -37,12 +37,12 @@ public class ChordNode {
 		return predecessor;
 	}
 
-	public void setSuccesor(ChordNode succesor) {
-		this.succesor = succesor;
+	public void setsuccessor(ChordNode successor) {
+		this.successor = successor;
 	}
 
-	public ChordNode getSuccesor() {
-		return succesor;
+	public ChordNode getsuccessor() {
+		return successor;
 	}
 	
 	public ChordNode(String id){
@@ -54,20 +54,20 @@ public class ChordNode {
 		
 	private void create() {
 		predecessor=null;
-		succesor=this;
+		successor=this;
 	}
 
 	public void join(ChordNode cNode){
 		this.predecessor=null;
-		succesor=cNode.find_successor(this.getChordKey());
+		successor=cNode.find_successor(this.getChordKey());
 	}
 
 	/*
 	 *  ask node n to find the successor of id
 	 */
 	public ChordNode find_successor(ChordKey key) {
-	  if (key.isBetween(this,succesor)) //TODO
-		return succesor;
+	  if (key.isBetween(this,successor)) //TODO
+		return successor;
 	  else { // forward the query around the circle
 	    ChordNode cNode = closest_preceding_node(key);
 	    return cNode.find_successor(key);
@@ -83,4 +83,47 @@ public class ChordNode {
 		return this;
 	}
 
+	
+	
+	/*
+	 * called periodically. n asks the successor
+	 * about its predecessor, verifies if n's immediate
+	 * successor is consistent, and tells the successor about n 
+	 */
+	public void stabilize(){
+		ChordNode cNode = successor.getPredecessor();
+		if (cNode.getChordKey().getKey()>this.getChordKey().getKey() 
+		 && cNode.getChordKey().getKey()<successor.getChordKey().getKey())
+		{
+			successor = cNode;
+		}
+		successor.notify(this);
+	}
+
+	/*
+	 * cNode thinks it might be our predecessor.
+	 */
+	public void notify(ChordNode cNode) {
+	   if (predecessor.equals(null) || // cNode.g(predecessor, n)
+		  (cNode.getChordKey().getKey()>predecessor.getChordKey().getKey()
+		 && cNode.getChordKey().getKey()<this.getChordKey().getKey()))	   
+	     predecessor = cNode;
+	}
+
+	
+	/*
+	 * called periodically. refreshes finger table entries.
+	 * next stores the index of the finger to fix
+	 */
+	public void fix_fingers(){
+	   for (int index=0;index<FingerTable.maxFingers ;index++) //TODO
+		   index++;		   // this.fingerTable.setFinger(index,find_successor(this.getChordKey().getKey()+2^(index−1)));
+	}
+	
+	public void check_predecessor(){
+		if(this.getPredecessor().equals(null)){ //TODO CALL THE PREDECESOR
+			predecessor=null;
+		}
+	}
+	
 }

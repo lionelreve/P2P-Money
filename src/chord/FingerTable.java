@@ -14,5 +14,8 @@ public class FingerTable {
 	public ChordNode getFinger(int index){
 		return fingerTable[index];
 	}
-	
+
+	public void setFinger(int index, ChordNode cNode){
+		fingerTable[index]= cNode;
+	}
 }
