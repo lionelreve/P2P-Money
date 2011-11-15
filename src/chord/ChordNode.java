@@ -59,14 +59,14 @@ public class ChordNode {
 
 	public void join(ChordNode cNode){
 		this.predecessor=null;
-		successor=cNode.find_successor(this.getChordKey());
+		successor=cNode.find_successor(this.getChordKey().getKey());
 	}
 
 	/*
 	 *  ask node n to find the successor of id
 	 */
-	public ChordNode find_successor(ChordKey key) {
-	  if (key.isBetween(this,successor)) //TODO
+	public ChordNode find_successor(int key) {
+	  if (isBetween(this,successor)) //TODO
 		return successor;
 	  else { // forward the query around the circle
 	    ChordNode cNode = closest_preceding_node(key);
@@ -74,13 +74,19 @@ public class ChordNode {
 	  }
 	}
 	
-	public ChordNode closest_preceding_node(ChordKey cKey){
+	public ChordNode closest_preceding_node(int cKey){
 		for (int i = FingerTable.maxFingers-1; i >= 0; i--) {
 			int fingerKey = fingerTable.getFinger(i).getChordKey().getKey();
-			if(fingerKey > this.getChordKey().getKey() && fingerKey < cKey.getKey())
+			if(fingerKey > this.getChordKey().getKey() && fingerKey < cKey)
 				return fingerTable.getFinger(i);
 		}		
 		return this;
+	}
+	
+	public boolean isBetween(ChordNode m, ChordNode n){
+		if (this.getChordKey().getKey()>m.getChordKey().getKey() && this.getChordKey().getKey()<=n.getChordKey().getKey() )
+			return true;
+		return false;
 	}
 
 	
@@ -117,7 +123,8 @@ public class ChordNode {
 	 */
 	public void fix_fingers(){
 	   for (int index=0;index<FingerTable.maxFingers ;index++) //TODO
-		   index++;		   // this.fingerTable.setFinger(index,find_successor(this.getChordKey().getKey()+2^(index−1)));
+		   // index++;		   
+		   this.fingerTable.setFinger(index,find_successor(this.getChordKey().getKey()+2^(index-1)));
 	}
 	
 	public void check_predecessor(){

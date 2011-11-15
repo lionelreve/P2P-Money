@@ -19,12 +19,6 @@ public class ChordKey {
 	public Integer getKey(){
 		return key;
 	}
-	
-	public boolean isBetween(ChordNode m, ChordNode n){
-		if (key>m.getChordKey().getKey() && key<=n.getChordKey().getKey() )
-			return true;
-		return false;
-	}
 
 	
 }
