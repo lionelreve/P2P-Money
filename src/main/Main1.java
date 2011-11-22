@@ -74,10 +74,10 @@ public class Main1 {
 		}
 		
 		//int id = rand.nextInt((int)Math.pow(2, FingerTable.MAXFINGERS)) % (int)Math.pow(2, FingerTable.MAXFINGERS-1);
-		int id = Hash.hash(idFirstNode) % (int)Math.pow(2, FingerTable.MAXFINGERS-1);
+		// int id = Hash.hash(idFirstNode) % (int)Math.pow(2, FingerTable.MAXFINGERS-1);
 		
 		// try {
-			firstNode = new ChordNode(id + "");
+			firstNode = new ChordNode(idFirstNode);
 		// } catch (RemoteException e1) {
 		// 	e1.printStackTrace();
 		// }
@@ -104,25 +104,31 @@ public class Main1 {
 						System.out.println("#########################");
 						System.out.print("--> ");
 						int chx = Integer.parseInt(input.readLine().trim());
-						int id;
+						
+						String nodeId;
 						switch (chx) {
 						case 1:
 							while(true){
 								System.out.print("Node id = " );
-								id = Hash.hash(input.readLine().trim());
+								nodeId = input.readLine();
+								int id;
+								id = Hash.hash(nodeId);
 								id = id % (int) Math.pow(2, FingerTable.MAXFINGERS -1);
+								System.out.println("id : " + id);
 								if(ifNodeExist(id)){
 									System.err.println("Node already existing!");
 								} else {
 									break;
 								}
 							}
-							ChordNode n = new ChordNode(id + "");
+							ChordNode n = new ChordNode(nodeId);
+							System.out.println("NodeID : " + nodeId);
+							System.out.println("NodeKey : " + n.getChordKey().getKey());
 							nodes.add(n);
-							System.out.println("\n--> Adding NODE " + id + "\n");
+							System.out.println("\n--> Adding NODE " + n.getChordKey().getKey() + "\n");
 							n.join(firstNode);
 							
-							// nbNode++;
+							nbNode++;
 							break;
 						case 2:
 //							while(true){
