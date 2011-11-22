@@ -2,11 +2,11 @@ package chord;
 
 public class FingerTable {
 	
-	public static final int maxFingers = 6;
-	ChordNode[] fingerTable = new ChordNode[maxFingers];
+	public static final int MAXFINGERS = 6;
+	ChordNode[] fingerTable = new ChordNode[MAXFINGERS];
 	
 	public FingerTable(ChordNode cNode){
-		for(int i=0;i<maxFingers;i++) {
+		for(int i=0;i<MAXFINGERS;i++) {
 			fingerTable[i]=cNode;
 		}
 	}
