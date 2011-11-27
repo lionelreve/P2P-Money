@@ -114,7 +114,6 @@ public class Main1 {
 								int id;
 								id = Hash.hash(nodeId);
 								id = id % (int) Math.pow(2, FingerTable.MAXFINGERS -1);
-								System.out.println("id : " + id);
 								if(ifNodeExist(id)){
 									System.err.println("Node already existing!");
 								} else {
@@ -122,8 +121,6 @@ public class Main1 {
 								}
 							}
 							ChordNode n = new ChordNode(nodeId);
-							System.out.println("NodeID : " + nodeId);
-							System.out.println("NodeKey : " + n.getChordKey().getKey());
 							nodes.add(n);
 							System.out.println("\n--> Adding NODE " + n.getChordKey().getKey() + "\n");
 							n.join(firstNode);
