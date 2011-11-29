@@ -61,8 +61,7 @@ public class Main1 {
 	}
 
 	public static void main(String[] args){
-		nodes = new ArrayList<ChordNode>();
-		final Random rand = new Random();
+		nodes = new ArrayList<ChordNode>();	
 		String idFirstNode = "";
 		
 		System.out.println("First Node Id = ");
@@ -112,8 +111,10 @@ public class Main1 {
 								System.out.print("Node id = " );
 								nodeId = input.readLine();
 								int id;
-								id = Hash.hash(nodeId);
-								id = id % (int) Math.pow(2, FingerTable.MAXFINGERS -1);
+								id = Hash.hash(nodeId) % (int) Math.pow(2, FingerTable.MAXFINGERS -1);
+								if(id < 0){
+									id = 128 + id;
+								}
 								if(ifNodeExist(id)){
 									System.err.println("Node already existing !");
 								} else {
