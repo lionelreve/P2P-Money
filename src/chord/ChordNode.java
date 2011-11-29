@@ -104,14 +104,14 @@ public class ChordNode {
 	 * called periodically. refreshes finger table entries. next stores the
 	 * index of the finger to fix
 	 */
-	public synchronized void fix_fingers() {
+	public synchronized void fix_fingers() {		
 		index++;
 		if (index > FingerTable.MAXFINGERS - 1) {
 			index = 1;
 		}
 		this.fingerTable.setFinger(index,
-				find_successor(this.getChordKey().getKey() + 2 ^ (index - 1)
-						% (int) Math.pow(2, FingerTable.MAXFINGERS - 1)));
+				find_successor((int) ((this.getChordKey().getKey() + Math.pow(2,(index - 1)))
+						% (int) Math.pow(2, FingerTable.MAXFINGERS - 1))));
 	}
 
 	public void check_predecessor() {

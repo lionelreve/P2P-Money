@@ -13,7 +13,10 @@ public class ChordKey {
 	
 	public ChordKey(String id){
 		this.id=id;
-		this.key = Hash.hash(id)% (int)Math.pow(2, FingerTable.MAXFINGERS-1);
+		this.key = Hash.hash(id) % (int)Math.pow(2, FingerTable.MAXFINGERS-1);
+		if(key < 0){
+			key = 128 + key;
+		}
 	}
 	
 	public Integer getKey(){
