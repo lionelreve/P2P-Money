@@ -1,5 +1,6 @@
 package chord;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -140,6 +141,26 @@ public class ChordNode {
 			}
 		}).start();
 	}
+	
+
+	/**
+	 * Kill the node (clean)
+	 */
+	public synchronized void delete() {
+		alive = false;
+		predecessor.setSuccessor(successor);
+		successor.setPredecessor(predecessor);
+		//TODO add the objects hold by n to the successor.
+		/*for (int key : fingerTable.keySet()) {
+			try {
+				successor.addObject(key, table.get(key));
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}*/
+	}
+
+	
 
 	public synchronized String toString() {
 		String res = "<NODE: "
@@ -198,7 +219,7 @@ public class ChordNode {
 		return predecessor;
 	}
 
-	public void setsuccessor(ChordNode successor) {
+	public void setSuccessor(ChordNode successor) {
 		this.successor = successor;
 	}
 

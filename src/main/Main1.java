@@ -115,7 +115,7 @@ public class Main1 {
 								id = Hash.hash(nodeId);
 								id = id % (int) Math.pow(2, FingerTable.MAXFINGERS -1);
 								if(ifNodeExist(id)){
-									System.err.println("Node already existing!");
+									System.err.println("Node already existing !");
 								} else {
 									break;
 								}
@@ -128,25 +128,28 @@ public class Main1 {
 							nbNode++;
 							break;
 						case 2:
-//							while(true){
-//								System.out.println("id = " );
-//								id = Integer.parseInt(input.readLine().trim());
-//								if(!ifNodeExist(id)){
-//									System.err.println("Unknow Node " + id);
-//								} else {
-//									break;
-//								}
-//							}
-//							for(int i = 0; i < nodes.size(); i++) {
-//								ChordNode node = nodes.get(i);
-//								if(node.getChordKey().getKey() == id){
-//									System.err.println("--> Removing NODE " + node.getChordKey().getKey() + "\n");
-//									nodes.remove(i);
-//									node.kill();
-//									break;
-//								}
-//							}
-							System.out.println("Not yet implemented");
+							while(true){
+								System.out.println("id = " );
+								nodeId = input.readLine();
+								int id;
+								id = Hash.hash(nodeId);
+								id = id % (int) Math.pow(2, FingerTable.MAXFINGERS -1);
+								if(!ifNodeExist(id)){
+									System.err.println("Node doesn't exist !");
+								} else {
+									ChordNode nToDelete = nodes.get(id);
+									if (nodes.remove(nodeId))
+									{
+										System.out.println("\n--> Deleting NODE " + nToDelete.getChordKey().getKey() + "\n");
+										nToDelete.delete();
+										nbNode--;
+									}
+									else 
+										System.err.println("\n--> Problem during deletion of NODE " + nToDelete.getChordKey().getKey() + "\n");
+									break;
+								}
+							}
+							// System.out.println("Not yet implemented");
 							break;
 						case 3:
 							display();
