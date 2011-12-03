@@ -1,12 +1,12 @@
 package chord;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Map;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
-
-public class ChordNode {
+public class ChordNode extends UnicastRemoteObject implements ChordInterface{
+	
+	private static final long serialVersionUID = 1613424494460703307L;
 
 	private String id = null;
 	private ChordKey chordKey = null;
@@ -23,7 +23,7 @@ public class ChordNode {
 	/** Boolean for the Stay Stable thread */
 	private boolean alive = true;
 
-	public ChordNode(String id) {
+	public ChordNode(String id) throws RemoteException{
 		this.create();
 		this.setNodeId(id);
 		this.chordKey = new ChordKey(id);
@@ -31,23 +31,22 @@ public class ChordNode {
 		this.checkStable();
 	}
 
-	private void create() {
+	private void create() throws RemoteException{
 		predecessor = this;
 		successor = this;
 	}
 
-	public void join(ChordNode cNode) {
+	@Override
+	public void join(ChordInterface cNode) throws RemoteException{
 		System.out.println("join");
 		this.predecessor = null;
-		System.out.println("predecessor");
-		successor = cNode.find_successor(this.getChordKey().getKey());
-		System.out.println("find_successor");
+		successor = (ChordNode) cNode.find_successor(this.getChordKey().getKey());
 	}
 
 	/*
 	 * ask node n to find the successor of id
 	 */
-	public ChordNode find_successor(int key) {
+	public ChordNode find_successor(int key) throws RemoteException{
 		if (isBetween(key, this.getChordKey().getKey() + 1, successor
 				.getChordKey().getKey())){
 			return successor;
@@ -58,7 +57,7 @@ public class ChordNode {
 		}
 	}
 
-	public ChordNode closest_preceding_node(int cKey) {
+	public ChordNode closest_preceding_node(int cKey) throws RemoteException{
 		for (int i = FingerTable.MAXFINGERS - 1; i > 0; i--) {
 			int fingerKey = fingerTable.getFinger(i).getChordKey().getKey();
 			if (fingerTable.getFinger(i).isAlive()
@@ -69,7 +68,7 @@ public class ChordNode {
 		return this;
 	}
 
-	public boolean isBetween(int id, int begin, int end) {
+	public boolean isBetween(int id, int begin, int end) throws RemoteException{
 		return (begin < end && begin <= id && id <= end)
 				|| (begin > end && ((begin <= id && id <= MAXid) || (MINid <= id && id <= end)))
 				|| ((begin == end) && (id == begin));
@@ -79,7 +78,7 @@ public class ChordNode {
 	 * called periodically. n asks the successor about its predecessor, verifies
 	 * if n's immediate successor is consistent, and tells the successor about n
 	 */
-	public synchronized void stabilize() {
+	public synchronized void stabilize() throws RemoteException{
 		ChordNode cNode = successor.getPredecessor();
 		if (isBetween(cNode.getChordKey().getKey(),
 				this.getChordKey().getKey() + 1, successor.getChordKey()
@@ -92,7 +91,7 @@ public class ChordNode {
 	/*
 	 * cNode thinks it might be our predecessor.
 	 */
-	public synchronized void notify(ChordNode cNode) {
+	public synchronized void notify(ChordNode cNode) throws RemoteException{
 		if (predecessor == null
 				|| // cNode.g(predecessor, n)
 				isBetween(cNode.getChordKey().getKey(), predecessor
@@ -105,7 +104,7 @@ public class ChordNode {
 	 * called periodically. refreshes finger table entries. next stores the
 	 * index of the finger to fix
 	 */
-	public synchronized void fix_fingers() {		
+	public synchronized void fix_fingers() throws RemoteException{		
 		index++;
 		if (index > FingerTable.MAXFINGERS - 1) {
 			index = 1;
@@ -115,7 +114,7 @@ public class ChordNode {
 						% (int) Math.pow(2, FingerTable.MAXFINGERS - 1))));
 	}
 
-	public void check_predecessor() {
+	public void check_predecessor() throws RemoteException{
 		if (this.getPredecessor().equals(null)) { // TODO CALL THE PREDECESOR
 			predecessor = null;
 		}
@@ -124,16 +123,21 @@ public class ChordNode {
 	/**
 	 * Run a thread for the stabilization of the node
 	 */
-	private void checkStable() {
+	private void checkStable(){
 		new Thread(new Runnable() {
 			public void run() {
 				while (alive) {
 					// System.err.println("\tStabilization in progress for Node "
 					// + getId());
-					stabilize();
-					fix_fingers();
 					try {
-						Thread.sleep(500);
+						stabilize();
+						fix_fingers();
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}
+					
+					try {
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -146,7 +150,7 @@ public class ChordNode {
 	/**
 	 * Kill the node (clean)
 	 */
-	public synchronized void delete() {
+	public synchronized void delete() throws RemoteException{
 		alive = false;
 		predecessor.setSuccessor(successor);
 		successor.setPredecessor(predecessor);
@@ -162,7 +166,7 @@ public class ChordNode {
 
 	
 
-	public synchronized String toString() {
+	public synchronized String toString(){
 		String res = "<NODE: "
 				+ this.getChordKey().getKey()
 				+ ", PRED: "

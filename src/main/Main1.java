@@ -60,7 +60,7 @@ public class Main1 {
 		System.out.println(res);
 	}
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws RemoteException{
 		nodes = new ArrayList<ChordNode>();	
 		String idFirstNode = "";
 		
