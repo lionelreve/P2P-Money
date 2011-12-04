@@ -10,7 +10,7 @@ import javax.crypto.Cipher;
 
 public class MainClass {
   public static void main(String[] args) throws Exception {
-    //Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+    Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
     byte[] input = "aa".getBytes();
     Cipher cipher = Cipher.getInstance("RSA/None/NoPadding", "BC");
