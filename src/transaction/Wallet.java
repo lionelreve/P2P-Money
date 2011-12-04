@@ -25,14 +25,9 @@ public class Wallet implements Serializable {
 			return null;
 	}
 	
-	
-	
 	// Now send the coins back!
-	
 	//assert sendTx != null;  // We should never try to send more coins than we have!
 	//System.out.println("Sent coins back! Transaction hash is " + sendTx.getHashAsString());
-
-
 
 	public double getMoney() {
 		return money;

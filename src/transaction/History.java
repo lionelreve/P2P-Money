@@ -7,5 +7,4 @@ public class History {
 	public ArrayList<Transaction> historyTransactions;
 	public ArrayList<Wallet> historyWallets;
 	
-	
 }
