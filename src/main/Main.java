@@ -24,7 +24,7 @@ public class Main {
 		    firstNode = new ChordNode(host);
 		    Naming.rebind("rmi://" + host + ":" + port+"/ChordNode", firstNode);
 		    firstNode.setNodes(new ArrayList<ChordInterface>());
-		    firstNode.addNode(firstNode);
+		    firstNode.addNode(host, port);
 		    System.out.println("Chord créée");
 		} catch (Exception e) {
 		    e.printStackTrace();

@@ -3,17 +3,14 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.rmi.ConnectException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
 import chord.ChordInterface;
 import chord.ChordNode;
-import chord.FingerTable;
-import chord.Hash;
 
 public class Client extends UnicastRemoteObject{
 	
@@ -40,10 +37,17 @@ public class Client extends UnicastRemoteObject{
 		System.out.println("Client is running");
 		
 		BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("What is your ip adress ? ");
+		System.out.println("Quelle est votre adresse ip ? ");
 		String clientIp = "";
+		ChordNode n = null;
+		int clientPort = 0;
 		try {
 			clientIp = stdIn.readLine();
+			System.out.println("Sur quel port ?");
+			clientPort = Integer.parseInt(stdIn.readLine().trim());
+			n = new ChordNode(clientIp);
+			LocateRegistry.createRegistry(clientPort);
+			Naming.rebind("rmi://" + clientIp + ":" + clientPort+"/ChordNode", n);
 //			int id;
 //			id = Hash.hash(clientIp) % (int) Math.pow(2, FingerTable.MAXFINGERS -1);
 //			if(id < 0){
@@ -53,11 +57,11 @@ public class Client extends UnicastRemoteObject{
 			e.printStackTrace();
 		}
 		
-		ChordNode n = new ChordNode(clientIp);
+		
 		// nodes.add(n);
 		System.out.println("\n--> Adding NODE " + n.getChordKey().getKey() + "\n");
 		n.join(chordNode);
-		chordNode.addNode(n);
+		chordNode.addNode(clientIp, clientPort);
 		
 		new Thread(new Runnable(){
 			@Override
