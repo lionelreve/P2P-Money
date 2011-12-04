@@ -21,14 +21,14 @@ public class Main1 {
 	private static int nbNode = 2;
 	private static int sleepTime = 100;
 	
-	public static boolean ifNodeExist(int id){
+	public static boolean ifNodeExist(int id) throws RemoteException{
 		for(ChordNode n : nodes){
 			if(n.getChordKey().getKey()==id) return true;
 		}
 		return false;
 	}
 	
-	public static void sortNodes(){
+	public static void sortNodes() throws RemoteException{
 		ArrayList<ChordNode> res = new ArrayList<ChordNode>();
 		ChordNode nodeMin;
 		int i,j;
@@ -49,7 +49,7 @@ public class Main1 {
 		nodes = res;
 	}
 	
-	public static void display() {
+	public static void display() throws RemoteException{
 		String res = "";
 		res += "________________________________________________________\n\n";
 		sortNodes();
