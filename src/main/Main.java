@@ -2,11 +2,9 @@ package main;
 
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 
+import chord.ChordInterface;
 import chord.ChordNode;
 
 public class Main {
@@ -25,6 +23,8 @@ public class Main {
 		    LocateRegistry.createRegistry(port);
 		    firstNode = new ChordNode(host);
 		    Naming.rebind("rmi://" + host + ":" + port+"/ChordNode", firstNode);
+		    firstNode.setNodes(new ArrayList<ChordInterface>());
+		    firstNode.addNode(firstNode);
 		    System.out.println("Chord créée");
 		} catch (Exception e) {
 		    e.printStackTrace();

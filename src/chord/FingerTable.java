@@ -1,21 +1,25 @@
 package chord;
 
-public class FingerTable {
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class FingerTable extends UnicastRemoteObject implements FingerTableInterface{
 	
+	private static final long serialVersionUID = 1L;
 	public static final int MAXFINGERS = 8;
-	ChordNode[] fingerTable = new ChordNode[MAXFINGERS];
+	ChordInterface[] fingerTable = new ChordInterface[MAXFINGERS];
 	
-	public FingerTable(ChordNode cNode){
+	public FingerTable(ChordInterface cNode) throws RemoteException{
 		for(int i=1;i<MAXFINGERS;i++) {
 			fingerTable[i]=cNode;
 		}
 	}
 	
-	public ChordNode getFinger(int index){
+	public ChordInterface getFinger(int index) throws RemoteException{
 		return fingerTable[index];
 	}
 
-	public void setFinger(int index, ChordNode cNode){
+	public void setFinger(int index, ChordInterface cNode) throws RemoteException{
 		fingerTable[index]= cNode;
 	}
 }
