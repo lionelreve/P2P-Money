@@ -4,6 +4,8 @@ import java.lang.Byte;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import security.Hash;
+
 public class ChordKey extends UnicastRemoteObject implements ChordKeyInterface{
 	
 	private static final long serialVersionUID = -184042299264191344L;
