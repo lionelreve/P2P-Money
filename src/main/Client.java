@@ -3,14 +3,17 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.rmi.ConnectException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
 import chord.ChordInterface;
 import chord.ChordNode;
+import chord.FingerTable;
+import chord.Hash;
 
 public class Client extends UnicastRemoteObject{
 	
@@ -37,17 +40,10 @@ public class Client extends UnicastRemoteObject{
 		System.out.println("Client is running");
 		
 		BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Quelle est votre adresse ip ? ");
+		System.out.println("What is your ip adress ? ");
 		String clientIp = "";
-		ChordNode n = null;
-		int clientPort = 0;
 		try {
 			clientIp = stdIn.readLine();
-			System.out.println("Sur quel port ?");
-			clientPort = Integer.parseInt(stdIn.readLine().trim());
-			n = new ChordNode(clientIp);
-			LocateRegistry.createRegistry(clientPort);
-			Naming.rebind("rmi://" + clientIp + ":" + clientPort+"/ChordNode", n);
 //			int id;
 //			id = Hash.hash(clientIp) % (int) Math.pow(2, FingerTable.MAXFINGERS -1);
 //			if(id < 0){
@@ -57,76 +53,11 @@ public class Client extends UnicastRemoteObject{
 			e.printStackTrace();
 		}
 		
-		
+		ChordNode n = new ChordNode(clientIp);
 		// nodes.add(n);
 		System.out.println("\n--> Adding NODE " + n.getChordKey().getKey() + "\n");
 		n.join(chordNode);
-		chordNode.addNode(clientIp, clientPort);
-		
-		new Thread(new Runnable(){
-			@Override
-			public void run() {
-				while(true){
-					try {
-						BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-						System.out.println("#########################");
-						System.out.println("# 1) Afficher la chord \t#");
-						System.out.println("# 2) Quitter la chord \t#");
-						System.out.println("#########################");
-						System.out.print("--> ");
-						int chx = Integer.parseInt(input.readLine().trim());
-						
-						String nodeId;
-						switch (chx) {
-						case 1:
-							System.out.println(chordNode.display());
-							break;
-						case 2:
-//							while(true){
-//								System.out.println("id = " );
-//								nodeId = input.readLine();
-//								int id;
-//								id = Hash.hash(nodeId);
-//								id = id % (int) Math.pow(2, FingerTable.MAXFINGERS -1);
-//								if(!ifNodeExist(id)){
-//									System.err.println("Node doesn't exist !");
-//								} else {
-//									ChordNode nToDelete = nodes.get(id);
-//									if (nodes.remove(nodeId))
-//									{
-//										System.out.println("\n--> Deleting NODE " + nToDelete.getChordKey().getKey() + "\n");
-//										nToDelete.delete();
-//										nbNode--;
-//									}
-//									else 
-//										System.err.println("\n--> Problem during deletion of NODE " + nToDelete.getChordKey().getKey() + "\n");
-//									break;
-//								}
-//							}
-							System.out.println("Not yet implemented");
-							break;
-						case 3:
-							
-							break;
-						case 0:
-							System.out.println("=> Chord exit");
-							System.exit(0);
-							break;
-						default:
-							break;
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-					try {
-						Thread.sleep(sleepTime);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
+		chordNode.addNode(n);
 		
 		
 //		try {

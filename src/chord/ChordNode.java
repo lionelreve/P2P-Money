@@ -1,8 +1,5 @@
 package chord;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -68,7 +65,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 				return fingerTable.getFinger(i);
 			}
 		}
-		return this;
+		return successor;
 	}
 
 	public boolean isBetween(int id, int begin, int end) throws RemoteException{
@@ -167,17 +164,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		}*/
 	}
 
-	public void addNode(String ip, int port) throws RemoteException{
-		ChordInterface cNode = null;
-		try {
-			cNode = (ChordInterface) Naming.lookup("rmi://" + ip + ":" + port + "/ChordNode");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void addNode(ChordInterface cNode) throws RemoteException{
 		nodes.add(cNode);
 	}
 	

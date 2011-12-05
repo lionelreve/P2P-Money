@@ -20,7 +20,7 @@ public interface ChordInterface extends Remote{
 	
 	public void fix_fingers() throws RemoteException;
 	
-	public void addNode(String ip, int port) throws RemoteException;
+	public void addNode(ChordInterface cNode) throws RemoteException;
 	
 	public void sortNodes() throws RemoteException;
 	
