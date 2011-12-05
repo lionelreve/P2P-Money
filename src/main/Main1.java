@@ -10,9 +10,10 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Random;
 
+import security.Hash;
+
 import chord.ChordNode;
 import chord.FingerTable;
-import chord.Hash;
 
 public class Main1 {
 	

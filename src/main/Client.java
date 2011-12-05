@@ -13,7 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 import chord.ChordInterface;
 import chord.ChordNode;
 import chord.FingerTable;
-import chord.Hash;
+import security.Hash;
 
 public class Client extends UnicastRemoteObject{
 	
