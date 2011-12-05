@@ -8,8 +8,6 @@ public class Wallet implements Serializable {
 
 	private double money=0;
 	
-	
-	
 	/*
 	 * To send coins, we use the wallets sendCoins method.
 	 *  It takes three arguments: the peer, the address to send coins to 
@@ -23,6 +21,10 @@ public class Wallet implements Serializable {
 		}
 		else 
 			return null;
+	}
+	
+	public boolean hasMoney(double money){
+		return this.getMoney()>=money;
 	}
 	
 	// Now send the coins back!

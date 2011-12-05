@@ -17,6 +17,14 @@ public class Transaction {
 	byte[] signature=null;
 	PublicKey publicKey= null;
 	
+	public Transaction(ChordKey peer, ChordKey from, double value, byte[] signature, PublicKey publicKey){
+		this.peer=peer;
+		this.from=from;
+		this.value=value;
+		this.signature=signature;
+		this.publicKey= publicKey;
+	}
+	
 	public Transaction(ChordNode from, ChordKey peer, double value) throws Exception{
 		this.from= (ChordKey) from.getChordKey();
 		this.peer= peer;
