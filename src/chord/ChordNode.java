@@ -3,6 +3,9 @@ package chord;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.security.KeyPair;
+
+import security.MySignature;
 
 public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 	
@@ -15,6 +18,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 	private ChordInterface successor = null;
 	private FingerTableInterface fingerTable = null;
 	private int index = 0;
+	private KeyPair keyPair = null;
 
 	/** id MAX */
 	private static int MAXid = (int) Math.pow(2, FingerTable.MAXFINGERS - 1) - 1;
@@ -29,6 +33,12 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		this.chordKey = new ChordKey(id);
 		this.fingerTable = new FingerTable(this);
 		this.checkStable();
+		try {
+			this.setKeyPair(MySignature.generateKeyPair(chordKey.getKey()));
+		} catch (Exception e) {
+			System.err.println("La generation de keyPair est mauvaise.");
+			e.printStackTrace();
+		}
 	}
 
 	private void create() throws RemoteException{
@@ -277,6 +287,14 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 
 	public boolean isAlive() throws RemoteException{
 		return this.alive;
+	}
+
+	public void setKeyPair(KeyPair keyPair) {
+		this.keyPair = keyPair;
+	}
+
+	public KeyPair getKeyPair() {
+		return keyPair;
 	}
 
 }
