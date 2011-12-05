@@ -44,14 +44,14 @@ public class Transaction {
 	
 	/*
 	 * In order to verify a transaction we must verify 
-	 * 1) that the origin of the transaction is really the one who says it is.
-	 * 2) That its wallet contains enough credit. TODO 
+	 * 1) That its wallet contains enough credit.
+	 * 2) that the origin of the transaction is really the one who says it is.
 	 */
 	public static boolean VerifyTransaction(Transaction transaction) throws Exception{
-		//1 We verify the signature of the transaction
-		if (VerifySignature(transaction))
-			return true;
-		return false;
+		if (History.transactionIsAllowed(transaction))
+			return VerifySignature(transaction);
+		else
+			return false;
 	}
 	
 	public ChordKey getPeer() {

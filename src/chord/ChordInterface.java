@@ -4,6 +4,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import transaction.Transaction;
+
 public interface ChordInterface extends Remote{
 	
 	public void join(ChordInterface cNode) throws  RemoteException;
@@ -39,5 +41,6 @@ public interface ChordInterface extends Remote{
 	public void setSuccessor(ChordInterface successor) throws RemoteException;
 	
 	public boolean isAlive() throws RemoteException;
-
+	
+	
 }
