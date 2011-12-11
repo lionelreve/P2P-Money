@@ -18,8 +18,6 @@ import chord.ChordNode;
 import chord.FingerTable;
 
 public class MainMain {
-	
-	private static final int nbTotalNodes = 5;
 
 	public static ArrayList<ChordNode> nodes;
 	public static ChordNode firstNode;
@@ -73,7 +71,15 @@ public class MainMain {
 	 */
 	public static void main(String[] args) {
 		nodes = new ArrayList<ChordNode>();
-		createNodes();
+		int nbTotalNodes = 1;
+		System.out.println("Nombres de noeuds désirés ? ");
+		BufferedReader input_first = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			nbTotalNodes = Integer.parseInt(input_first.readLine());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		createNodes(nbTotalNodes);
 
 		try {
 			firstNode = new ChordNode("localhost:8000");
@@ -238,12 +244,12 @@ public class MainMain {
 
 	}
 
-	private static void createNodes() {
+	private static void createNodes(int nbTotalNodes) {
 		nodesToBeUse = new ArrayList<ChordNode>();
 		int lower = 8001;
 		int higher = 9000;
 		
-		for(int i =0;  i < nbTotalNodes; i++){
+		for(int i =0;  i < nbTotalNodes-1; i++){
 			try {
 				nodesToBeUse.add(new ChordNode("localhost:" + (int) (Math.random() * (higher-lower)) + lower));
 			} catch (RemoteException e) {
