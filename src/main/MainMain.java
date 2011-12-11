@@ -18,6 +18,8 @@ import chord.ChordNode;
 import chord.FingerTable;
 
 public class MainMain {
+	
+	private static final int nbTotalNodes = 5;
 
 	public static ArrayList<ChordNode> nodes;
 	public static ChordNode firstNode;
@@ -135,34 +137,38 @@ public class MainMain {
 							nbNode++;
 							break;
 						case 2:
-//							while (true) {
-//								System.out.println("id = ");
-//								int id = Integer.parseInt(input.readLine());
-//								if (!ifNodeExist(id)) {
-//									System.err.println("Node doesn't exist !");
-//								} else {
-//									
-//									ChordNode nToDelete = nodes.get(id);
-//									if (nodes.remove(nodeId)) {
-//										System.out
-//												.println("\n--> Deleting NODE "
-//														+ nToDelete
-//																.getChordKey()
-//																.getKey()
-//														+ "\n");
-//										nToDelete.delete();
-//										nbNode--;
-//									} else
-//										System.err
-//												.println("\n--> Problem during deletion of NODE "
-//														+ nToDelete
-//																.getChordKey()
-//																.getKey()
-//														+ "\n");
-//									break;
-//								}
-//							}
-							System.out.println("Not yet implemented");
+							while (true) {
+								System.out.println("id = ");
+								int id = Integer.parseInt(input.readLine());
+								if (!ifNodeExist(id)) {
+									System.err.println("Node doesn't exist !");
+								} else {
+									ChordNode nToDelete = null;
+									for(int i =0; i < nodes.size(); i++){
+										if(nodes.get(i).getChordKey().getKey() == id){
+											nToDelete = nodes.get(i);
+											break;
+										}
+									}
+									if (nToDelete != null && nodes.remove(nToDelete)) {
+										System.out
+												.println("\n--> Deleting NODE "
+														+ nToDelete
+																.getChordKey()
+																.getKey()
+														+ "\n");
+										nToDelete.delete();
+										nbNode--;
+									} else
+										System.err
+												.println("\n--> Problem during deletion of NODE "
+														+ nToDelete
+																.getChordKey()
+																.getKey()
+														+ "\n");
+									break;
+								}
+							}
 							break;
 						case 3:
 							display();
@@ -203,14 +209,15 @@ public class MainMain {
 
 	private static void createNodes() {
 		nodesToBeUse = new ArrayList<ChordNode>();
-		try {
-			nodesToBeUse.add(new ChordNode("localhost:8001"));
-			nodesToBeUse.add(new ChordNode("localhost:8002"));
-			nodesToBeUse.add(new ChordNode("localhost:8003"));
-			nodesToBeUse.add(new ChordNode("localhost:8004"));
-			nodesToBeUse.add(new ChordNode("localhost:8005"));
-		} catch (RemoteException e) {
-			e.printStackTrace();
+		int lower = 8001;
+		int higher = 9000;
+		
+		for(int i =0;  i < nbTotalNodes; i++){
+			try {
+				nodesToBeUse.add(new ChordNode("localhost:" + (int) (Math.random() * (higher-lower)) + lower));
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
