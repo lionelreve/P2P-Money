@@ -32,6 +32,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		this.setNodeId(id);
 		this.chordKey = new ChordKey(id);
 		this.fingerTable = new FingerTable(this);
+		this.nodes = new ArrayList<ChordInterface>(); 
 		this.checkStable();
 		try {
 			this.setKeyPair(MySignature.generateKeyPair(chordKey.getKey()));
