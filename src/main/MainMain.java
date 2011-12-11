@@ -176,14 +176,45 @@ public class MainMain {
 						case 4:
 							System.out.print("id of the source Node = ");
 							int from_id = Integer.parseInt(input.readLine().trim());
+							ChordNode from_Node = null;
+							if (!ifNodeExist(from_id)) {
+								System.err.println("Node doesn't exist !");
+							} else {
+								for(int i = 0; i < nodes.size(); i++){
+									if(nodes.get(i).getChordKey().getKey() == from_id){
+										from_Node = nodes.get(i);
+										break;
+									}
+								}
+							}
+
 							System.out.print("id of the destination Node = ");
 							int to_id = Integer.parseInt(input.readLine().trim());
-							System.out.print("Value of the transaction = ");
-							double value = Double.parseDouble(input.readLine().trim());				
-							TransactionObject transacObject = new TransactionObject(nodes.get(from_id),(ChordKey) nodes.get(to_id).getChordKey(), value);
+							ChordNode to_Node = null;
+							if (!ifNodeExist(to_id)) {
+								System.err.println("Node doesn't exist !");
+							} else {
+								for(int i =0; i < nodes.size(); i++){
+									if(nodes.get(i).getChordKey().getKey() == to_id){
+										to_Node = nodes.get(i);
+										break;
+									}
+								}
+							}
 							
-							if (History.transactionIsAllowed(transacObject))
+							System.out.print("Value of the transaction = ");
+							double value = Double.parseDouble(input.readLine().trim());
+							
+							TransactionObject transacObject = new TransactionObject(from_Node,(ChordKey) to_Node.getChordKey() , value);
+							if (History.transactionIsAllowed(transacObject)){
 								History.historyTransactions.add(transacObject);
+								from_Node.getWallet().giveMoney(value);
+								to_Node.getWallet().receiveMoney(value);
+							}
+							else {
+								new Exception("Transaction not allowed");
+							}
+							
 							break;
 						case 0:
 							System.out.println("=> Chord exit");

@@ -7,19 +7,20 @@ import chord.ChordNode;
 
 public class History {
 
-	public static ArrayList<TransactionObject> historyTransactions;
+	public static ArrayList<TransactionObject> historyTransactions = new ArrayList<TransactionObject>();
 	
 	
 	public static boolean transactionIsAllowed(TransactionObject transaction){
 		int montant = 0;
-		for (TransactionObject t : historyTransactions) {
-			if(t.getPeer()==transaction.getFrom()){
-				montant+=t.getValue();
+		if (historyTransactions.size() > 0)
+			for (TransactionObject t : historyTransactions) {
+				if(t.getPeer()==transaction.getFrom()){
+					montant+=t.getValue();
+				}
+				else if(t.getFrom()==transaction.getFrom()){
+					montant-=t.getValue();
+				}
 			}
-			else if(t.getFrom()==transaction.getFrom()){
-				montant-=t.getValue();
-			}
-		}
 		return (montant+10)>=transaction.getValue();
 	}
 	

@@ -35,7 +35,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		this.chordKey = new ChordKey(id);
 		this.fingerTable = new FingerTable(this);
 		this.nodes = new ArrayList<ChordInterface>();
-		this.wallet = new Wallet(10.0);
+		this.setWallet(new Wallet(10.0));
 		this.checkStable();
 		try {
 			this.setKeyPair(MySignature.generateKeyPair(chordKey.getKey()));
@@ -219,6 +219,8 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		try {
 			String res = "<NODE: "
 					+ this.getChordKey().getKey()
+					+ ", MONEY:" +
+					+ this.getWallet().getMoney()
 					+ ", PRED: "
 					+ (predecessor == null ? predecessor : predecessor
 							.getChordKey().getKey())
@@ -299,6 +301,14 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 
 	public KeyPair getKeyPair() {
 		return keyPair;
+	}
+
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
+	}
+
+	public Wallet getWallet() {
+		return wallet;
 	}
 
 }
