@@ -1,8 +1,13 @@
+/**
+ * Class which represent a node in the chord
+ * 
+ * @author Sebastien FIFRE, Lionel REVEILLERE
+ */
+
 package chord;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.security.KeyPair;
 
 import security.MySignature;
@@ -13,7 +18,6 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 
 	private String id = null;
 	private ChordKey chordKey = null;
-	private ArrayList<ChordInterface> nodes = null;
 	private ChordInterface predecessor = null;
 	private ChordInterface successor = null;
 	private FingerTableInterface fingerTable = null;
@@ -30,9 +34,11 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 	public ChordNode(String id) throws RemoteException{
 		this.create();
 		this.setNodeId(id);
+		// Initialize key of our node with an hash of his id
 		this.chordKey = new ChordKey(id);
+		// Initialize his fingerTable with himself
 		this.fingerTable = new FingerTable(this);
-		this.nodes = new ArrayList<ChordInterface>(); 
+		// Launch a thread which stabilize our node every 100ms
 		this.checkStable();
 		try {
 			this.setKeyPair(MySignature.generateKeyPair(chordKey.getKey()));
@@ -42,20 +48,26 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		}
 	}
 
+	/**
+	 * Initialize node predecessor and successor with himself
+	 * @throws RemoteException
+	 */
 	private void create() throws RemoteException{
 		predecessor = this;
 		successor = this;
 	}
 
+	/**
+	 * To join a chord which contains cNode
+	 */
 	@Override
 	public void join(ChordInterface cNode) throws RemoteException{
-		System.out.println("join");
 		this.predecessor = this;
 		successor = cNode.find_successor(this.getChordKey().getKey());
 	}
 
-	/*
-	 * ask node n to find the successor of id
+	/**
+	 * Method which returns the successor of the key passed in parameters
 	 */
 	public ChordInterface find_successor(int key) throws RemoteException{
 		if (isBetween(key, this.getChordKey().getKey() + 1, successor
@@ -173,44 +185,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 				e.printStackTrace();
 			}
 		}*/
-	}
-
-	public void addNode(ChordInterface cNode) throws RemoteException{
-		nodes.add(cNode);
-	}
-	
-	public void sortNodes() throws RemoteException{
-		ArrayList<ChordInterface> res = new ArrayList<ChordInterface>();
-		ChordInterface nodeMin;
-		int i,j;
-		while(nodes.size() != 0){
-			i = 0;
-			j = 0;
-			nodeMin = nodes.get(0);
-			for(ChordInterface n : nodes){
-				if(n.getChordKey().getKey() < nodeMin.getChordKey().getKey()){
-					nodeMin = n;
-					i = j;
-				}
-				j++;
-			}
-			res.add(nodeMin);
-			nodes.remove(i);
-		}
-		nodes = res;
-	}
-	
-	public String display() throws RemoteException{
-		String res = "";
-		res += "________________________________________________________\n\n";
-		sortNodes();
-		for (ChordInterface n : nodes) {
-			res += n;
-		}
-		res += "________________________________________________________\n";
-		return res;
-	}
-	
+	}	
 
 	public synchronized String toString(){
 		try {
@@ -260,14 +235,6 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 
 	public ChordKeyInterface getChordKey() throws RemoteException{
 		return chordKey;
-	}
-
-	public ArrayList<ChordInterface> getNodes()throws RemoteException{
-		return nodes;
-	}
-	
-	public void setNodes(ArrayList<ChordInterface> nodes) throws RemoteException{
-		this.nodes = nodes;
 	}
 
 	public void setPredecessor(ChordInterface predecessor) throws RemoteException{

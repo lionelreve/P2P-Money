@@ -22,17 +22,7 @@ public interface ChordInterface extends Remote{
 	
 	public void fix_fingers() throws RemoteException;
 	
-	public void addNode(ChordInterface cNode) throws RemoteException;
-	
-	public void sortNodes() throws RemoteException;
-	
-	public String display() throws RemoteException;
-	
 	public ChordKeyInterface getChordKey() throws RemoteException;
-	
-	public ArrayList<ChordInterface> getNodes() throws RemoteException;
-	
-	public void setNodes(ArrayList<ChordInterface> nodes) throws RemoteException;
 	
 	public ChordInterface getPredecessor() throws RemoteException;
 	
