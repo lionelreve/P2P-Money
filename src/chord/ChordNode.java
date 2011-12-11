@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.security.KeyPair;
 
 import security.MySignature;
+import transaction.Wallet;
 
 public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 	
@@ -19,6 +20,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 	private FingerTableInterface fingerTable = null;
 	private int index = 0;
 	private KeyPair keyPair = null;
+	private Wallet wallet = null;
 
 	/** id MAX */
 	private static int MAXid = (int) Math.pow(2, FingerTable.MAXFINGERS - 1) - 1;
@@ -32,7 +34,8 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		this.setNodeId(id);
 		this.chordKey = new ChordKey(id);
 		this.fingerTable = new FingerTable(this);
-		this.nodes = new ArrayList<ChordInterface>(); 
+		this.nodes = new ArrayList<ChordInterface>();
+		this.wallet = new Wallet(10.0);
 		this.checkStable();
 		try {
 			this.setKeyPair(MySignature.generateKeyPair(chordKey.getKey()));

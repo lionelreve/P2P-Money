@@ -7,12 +7,12 @@ import chord.ChordNode;
 
 public class History {
 
-	public static ArrayList<Transaction> historyTransactions;
+	public static ArrayList<TransactionObject> historyTransactions;
 	
 	
-	public static boolean transactionIsAllowed(Transaction transaction){
+	public static boolean transactionIsAllowed(TransactionObject transaction){
 		int montant = 0;
-		for (Transaction t : historyTransactions) {
+		for (TransactionObject t : historyTransactions) {
 			if(t.getPeer()==transaction.getFrom()){
 				montant+=t.getValue();
 			}
@@ -20,7 +20,7 @@ public class History {
 				montant-=t.getValue();
 			}
 		}
-		return montant>transaction.getValue();
+		return (montant+10)>=transaction.getValue();
 	}
 	
 	/*
@@ -28,7 +28,7 @@ public class History {
 	 */
 	public static boolean transactionIsAllowed(ChordKey cKeyOrigin, double amont){
 		int montant = 0;
-		for (Transaction t : historyTransactions) {
+		for (TransactionObject t : historyTransactions) {
 			if(t.getPeer()==cKeyOrigin){
 				montant+=t.getValue();
 			}
@@ -36,20 +36,19 @@ public class History {
 				montant-=t.getValue();
 			}
 		}
-		return montant>amont;
+		return (montant+10)>=amont;
 	}
 	
-	public void addTransaction(Transaction t){
+	public void addTransaction(TransactionObject t){
 		this.historyTransactions.add(t);
 	}
 
-	public ArrayList<Transaction> getHistoryTransactions() {
+	public ArrayList<TransactionObject> getHistoryTransactions() {
 		return historyTransactions;
 	}
 
-	public void setHistoryTransactions(ArrayList<Transaction> historyTransactions) {
+	public void setHistoryTransactions(ArrayList<TransactionObject> historyTransactions) {
 		this.historyTransactions = historyTransactions;
 	}
-	
 	
 }

@@ -4,7 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import transaction.Transaction;
+import transaction.TransactionObject;
 
 public interface ChordInterface extends Remote{
 	

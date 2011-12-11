@@ -14,13 +14,17 @@ public class Wallet implements Serializable {
 	 *  (here we use the 'from' address we chose earlier) 
 	 * and how much money to send. 
 	 */
-	public Transaction sendCoins(ChordNode peer, ChordNode from, double value){
+	public TransactionObject sendCoins(ChordNode peer, ChordNode from, double value){
 		if (this.getMoney()>= value){		
 			// return new Transaction(peer, from, value);
 			return null;
 		}
 		else 
 			return null;
+	}
+	
+	public Wallet(double money){
+		this.money=money;
 	}
 	
 	public boolean hasMoney(double money){
