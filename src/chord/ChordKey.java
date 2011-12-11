@@ -16,6 +16,11 @@ public class ChordKey extends UnicastRemoteObject implements ChordKeyInterface{
 		this.key=key;
 	}
 	
+	/**
+	 * Create an key which corresponds at the hash of id
+	 * @param id
+	 * @throws RemoteException
+	 */
 	public ChordKey(String id) throws RemoteException{
 		this.id=id;
 		this.key = Hash.hash(id) % (int)Math.pow(2, FingerTable.MAXFINGERS-1);

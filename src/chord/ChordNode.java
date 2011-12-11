@@ -83,6 +83,9 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		}
 	}
 
+	/**
+	 * Search in fingerTable the highest predecessor of cKey
+	 */
 	public ChordInterface closest_preceding_node(int cKey) throws RemoteException{
 		for (int i = FingerTable.MAXFINGERS - 1; i > 0; i--) {
 			int fingerKey = fingerTable.getFinger(i).getChordKey().getKey();
@@ -94,15 +97,18 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		return successor;
 	}
 
+	/**
+	 * Return true if id is between begin and end else return false
+	 */
 	public boolean isBetween(int id, int begin, int end) throws RemoteException{
 		return (begin < end && begin <= id && id <= end)
 				|| (begin > end && ((begin <= id && id <= MAXid) || (MINid <= id && id <= end)))
 				|| ((begin == end) && (id == begin));
 	}
 
-	/*
-	 * called periodically. n asks the successor about its predecessor, verifies
-	 * if n's immediate successor is consistent, and tells the successor about n
+	/**
+	 * Called periodically by method checkStable. I ask the successor about my predecessor, verify
+	 * if my immediate successor is consistent, and tells the successor about me
 	 */
 	public synchronized void stabilize() throws RemoteException{
 		ChordInterface cNode = successor.getPredecessor();
@@ -114,7 +120,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		this.successor.notify(this);
 	}
 
-	/*
+	/**
 	 * cNode thinks it might be our predecessor.
 	 */
 	public synchronized void notify(ChordInterface cNode) throws RemoteException{
@@ -126,8 +132,8 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 			predecessor = cNode;
 	}
 
-	/*
-	 * called periodically. refreshes finger table entries. next stores the
+	/**
+	 * Called periodically by method checkStable. Update fingerTable. Variable index stores the
 	 * index of the finger to fix
 	 */
 	public synchronized void fix_fingers() throws RemoteException{		
@@ -140,12 +146,6 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 						% (int) Math.pow(2, FingerTable.MAXFINGERS - 1))));
 	}
 
-	public void check_predecessor() throws RemoteException{
-		if (this.getPredecessor().equals(null)) { // TODO CALL THE PREDECESOR
-			predecessor = null;
-		}
-	}
-
 	/**
 	 * Run a thread for the stabilization of the node
 	 */
@@ -153,8 +153,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		new Thread(new Runnable() {
 			public void run() {
 				while (alive) {
-					// System.err.println("\tStabilization in progress for Node "
-					// + getId());
+					// While node still exist
 					try {
 						stabilize();
 						fix_fingers();
@@ -180,16 +179,12 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		alive = false;
 		predecessor.setSuccessor(successor);
 		successor.setPredecessor(predecessor);
-		//TODO add the objects hold by n to the successor.
-		/*for (int key : fingerTable.keySet()) {
-			try {
-				successor.addObject(key, table.get(key));
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}*/
 	}	
 
+	/**
+	 * Method which displays informations about node like his successor, his predecessor,
+	 * his fingerTable and his wallet
+	 */
 	public synchronized String toString(){
 		try {
 			String res = "<NODE: "
@@ -212,14 +207,6 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 			} else {
 				res += "null";
 			}
-		// affichage du contenu de la table.
-		// if (!table.isEmpty()) {
-		// res += "\n\tData Content : ";
-		// for (Map.Entry<Integer, Object> entry : table.entrySet()) {
-		// res += "\n\t  [" + entry.getKey() + "] - ";
-		// res += entry.getValue().toString();
-		// }
-		// }
 			res += "\n\n";
 			return res;
 		} catch (RemoteException e) {
