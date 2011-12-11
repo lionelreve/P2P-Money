@@ -148,7 +148,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 					}
 					
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
