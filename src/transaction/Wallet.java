@@ -24,7 +24,13 @@ public class Wallet implements Serializable {
 	}
 	
 	public Wallet(double money){
-		this.money=money;
+		if (money>=0)
+			this.money=money;
+		else{
+			System.err.println("Money can't be initializated with a negative value !");
+			System.out.println("Money has been initializated with a 0 value.");
+			money=0;
+		}
 	}
 	
 	public boolean hasMoney(double money){
@@ -40,7 +46,32 @@ public class Wallet implements Serializable {
 	}
 	
 	public void setMoney(double money) {
-		this.money = money;
+		if (money>=0)
+			this.money=money;
+		else{
+			System.err.println("Money can't be a negative value !");
+			System.out.println("Money value hasn't change.");
+		}
+	}
+	
+	public void giveMoney(double money) {
+		if (money>=0){
+			this.money -= money;
+		}
+		else{
+			System.err.println("We can't give a negative value !");
+			System.out.println("Money value hasn't change.");
+		}
+	}
+	
+	public void receiveMoney(double money) {
+		if (money>=0){
+			this.money += money;
+		}
+		else{
+			System.err.println("We can't receive a negative value !");
+			System.out.println("Money value hasn't change.");
+		}
 	}
 
 }
