@@ -6,7 +6,7 @@ import java.util.Formatter;
 public class Hash {
 	
   /*
-   * Hash for human beings.
+   * Hash a String into an integer.
    */
   public static int hash(String id){
 	return id.hashCode();

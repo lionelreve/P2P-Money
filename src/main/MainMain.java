@@ -10,7 +10,10 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
 import security.Hash;
+import transaction.History;
+import transaction.TransactionObject;
 
+import chord.ChordKey;
 import chord.ChordNode;
 import chord.FingerTable;
 
@@ -99,6 +102,7 @@ public class MainMain {
 						System.out.println("# 1) Inserer un node \t#");
 						System.out.println("# 2) Retirer un node \t#");
 						System.out.println("# 3) Afficher la chord \t#");
+						System.out.println("# 4) Faire une transaction \t#");
 						System.out.println("# 0) Quitter jChord \t#");
 						System.out.println("#########################");
 						System.out.print("--> ");
@@ -168,6 +172,18 @@ public class MainMain {
 							break;
 						case 3:
 							display();
+							break;
+						case 4:
+							System.out.print("id of the source Node = ");
+							int from_id = Integer.parseInt(input.readLine().trim());
+							System.out.print("id of the destination Node = ");
+							int to_id = Integer.parseInt(input.readLine().trim());
+							System.out.print("Value of the transaction = ");
+							double value = Double.parseDouble(input.readLine().trim());				
+							TransactionObject transacObject = new TransactionObject(nodes.get(from_id),(ChordKey) nodes.get(to_id).getChordKey(), value);
+							
+							if (History.transactionIsAllowed(transacObject))
+								History.historyTransactions.add(transacObject);
 							break;
 						case 0:
 							System.out.println("=> Chord exit");

@@ -11,6 +11,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.security.KeyPair;
 
 import security.MySignature;
+import transaction.Wallet;
 
 public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 	
@@ -23,6 +24,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 	private FingerTableInterface fingerTable = null;
 	private int index = 0;
 	private KeyPair keyPair = null;
+	private Wallet wallet = null;
 
 	/** id MAX */
 	private static int MAXid = (int) Math.pow(2, FingerTable.MAXFINGERS - 1) - 1;
@@ -39,6 +41,7 @@ public class ChordNode extends UnicastRemoteObject implements ChordInterface{
 		// Initialize his fingerTable with himself
 		this.fingerTable = new FingerTable(this);
 		// Launch a thread which stabilize our node every 100ms
+		this.wallet = new Wallet(10.0);
 		this.checkStable();
 		try {
 			this.setKeyPair(MySignature.generateKeyPair(chordKey.getKey()));
