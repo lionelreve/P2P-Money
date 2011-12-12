@@ -52,4 +52,16 @@ public class History {
 		this.historyTransactions = historyTransactions;
 	}
 	
+	public static String toString2(){
+		String result = "Transaction Object :\n";
+		int i = 1;
+		if (historyTransactions.size() > 0)
+			for (TransactionObject t : historyTransactions) {
+				result += "\t" + i++ + ")" + t.toString();
+			}
+		else
+			result += "\tno transaction done yet\n";
+		return result;
+	}
+	
 }

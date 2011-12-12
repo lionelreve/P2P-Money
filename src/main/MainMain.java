@@ -98,13 +98,14 @@ public class MainMain {
 					try {
 						BufferedReader input = new BufferedReader(
 								new InputStreamReader(System.in));
-						System.out.println("#########################");
-						System.out.println("# 1) Inserer un node \t#");
-						System.out.println("# 2) Retirer un node \t#");
-						System.out.println("# 3) Afficher la chord \t#");
-						System.out.println("# 4) Faire une transaction \t#");
-						System.out.println("# 0) Quitter jChord \t#");
-						System.out.println("#########################");
+						System.out.println("################################");
+						System.out.println("# 1) Inserer un node \t\t\t#");
+						System.out.println("# 2) Retirer un node \t\t\t#");
+						System.out.println("# 3) Afficher la chord \t\t\t#");
+						System.out.println("# 4) Faire une transaction \t\t\t#");
+						System.out.println("# 5) Afficher l'historique de transaction \t\t\t#");
+						System.out.println("# 0) Quitter jChord \t\t\t#");
+						System.out.println("################################");
 						System.out.print("--> ");
 						int chx = Integer.parseInt(input.readLine().trim());
 
@@ -215,6 +216,9 @@ public class MainMain {
 								new Exception("Transaction not allowed");
 							}
 							
+							break;
+						case 5:
+							System.out.println(History.toString2());
 							break;
 						case 0:
 							System.out.println("=> Chord exit");

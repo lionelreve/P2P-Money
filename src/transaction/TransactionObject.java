@@ -69,4 +69,8 @@ public class TransactionObject {
 	public PublicKey getPublicKey() {
 		return publicKey;}
 
+	public String toString(){
+		return  value + " P2P-coins from " + from.getKey() + " to " + peer.getKey();
+	}
+	
 }
