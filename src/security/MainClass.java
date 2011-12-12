@@ -15,7 +15,7 @@ public class MainClass {
 
 	  RSA rsa = new RSA(true);
 	  
-	  /*
+   /*
     Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
     byte[] input = "aa".getBytes();
@@ -35,6 +35,6 @@ public class MainClass {
     cipher.init(Cipher.DECRYPT_MODE, privKey);
     byte[] plainText = cipher.doFinal(cipherText);
     System.out.println("plain : " + new String(plainText));
-      */
+    */
   }
 }

@@ -3,13 +3,22 @@ package transaction;
 import java.util.ArrayList;
 
 import chord.ChordKey;
-import chord.ChordNode;
 
+/*
+ * The history of all the transactions done in the Chord.
+ */
 public class History {
 
 	public static ArrayList<TransactionObject> historyTransactions = new ArrayList<TransactionObject>();
+	public static double initialMoney = 10;
 	
 	
+	/*
+	 * Verify is the transaction is allowed.
+	 * For this it calculate what remains in the wallet
+	 * after all the transactions are done.
+	 * @param  transaction : the transaction to verify
+	 */
 	public static boolean transactionIsAllowed(TransactionObject transaction){
 		int montant = 0;
 		if (historyTransactions.size() > 0)
@@ -21,11 +30,14 @@ public class History {
 					montant-=t.getValue();
 				}
 			}
-		return (montant+10)>=transaction.getValue();
+		return (montant+initialMoney)>=transaction.getValue();
 	}
 	
 	/*
-	 * On refait
+	 * Verify is the transaction is allowed.
+	 * For this it calculate what remains in the wallet
+	 * after all the transactions are done.
+	 * @param  transaction : the transaction to verify
 	 */
 	public static boolean transactionIsAllowed(ChordKey cKeyOrigin, double amont){
 		int montant = 0;
@@ -37,19 +49,19 @@ public class History {
 				montant-=t.getValue();
 			}
 		}
-		return (montant+10)>=amont;
+		return (montant+initialMoney)>=amont;
 	}
 	
-	public void addTransaction(TransactionObject t){
-		this.historyTransactions.add(t);
+	/*
+	 * Add a transaction in the history.
+	 * @param  t : the transaction to add in the history
+	 */
+	public static void addTransaction(TransactionObject t){
+		historyTransactions.add(t);
 	}
 
-	public ArrayList<TransactionObject> getHistoryTransactions() {
+	public static ArrayList<TransactionObject> getHistoryTransactions() {
 		return historyTransactions;
-	}
-
-	public void setHistoryTransactions(ArrayList<TransactionObject> historyTransactions) {
-		this.historyTransactions = historyTransactions;
 	}
 	
 	public static String toString2(){

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import security.Hash;
 import transaction.History;
+import transaction.TransactionException;
 import transaction.TransactionObject;
 
 import chord.ChordKey;
@@ -72,7 +73,7 @@ public class MainMain {
 	public static void main(String[] args) {
 		nodes = new ArrayList<ChordNode>();
 		int nbTotalNodes = 1;
-		System.out.println("Nombres de noeuds désirés ? ");
+		System.out.println("Nombres de noeuds dï¿½sirï¿½s ? ");
 		BufferedReader input_first = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			nbTotalNodes = Integer.parseInt(input_first.readLine());
@@ -105,12 +106,12 @@ public class MainMain {
 						BufferedReader input = new BufferedReader(
 								new InputStreamReader(System.in));
 						System.out.println("################################");
-						System.out.println("# 1) Inserer un node \t\t\t#");
-						System.out.println("# 2) Retirer un node \t\t\t#");
-						System.out.println("# 3) Afficher la chord \t\t\t#");
+						System.out.println("# 1) Inserer un node \t\t\t\t#");
+						System.out.println("# 2) Retirer un node \t\t\t\t#");
+						System.out.println("# 3) Afficher la chord \t\t\t\t#");
 						System.out.println("# 4) Faire une transaction \t\t\t#");
-						System.out.println("# 5) Afficher l'historique de transaction \t\t\t#");
-						System.out.println("# 0) Quitter jChord \t\t\t#");
+						System.out.println("# 5) Afficher l'historique de transaction \t#");
+						System.out.println("# 0) Quitter jChord \t\t\t\t#");
 						System.out.println("################################");
 						System.out.print("--> ");
 						int chx = Integer.parseInt(input.readLine().trim());
@@ -219,7 +220,7 @@ public class MainMain {
 								to_Node.getWallet().receiveMoney(value);
 							}
 							else {
-								new Exception("Transaction not allowed");
+								new TransactionException("Transaction not allowed");
 							}
 							
 							break;

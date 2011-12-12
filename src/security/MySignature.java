@@ -7,6 +7,9 @@ import java.security.SecureRandom;
 import java.security.Security;
 import java.security.Signature;
 
+/*
+ * A class that permit to sign an array of bytes.
+ */
 public class MySignature {
 
   public static byte[] signData(byte[] data, PrivateKey key) throws Exception {
@@ -16,6 +19,9 @@ public class MySignature {
     return (signer.sign());
   }
 
+  /*
+   * Return if the array of data is well signed.
+   */
   public static boolean verifySig(byte[] data, PublicKey key, byte[] sig) throws Exception {
     Signature signer = Signature.getInstance("SHA1withRSA");
     signer.initVerify(key);
@@ -24,6 +30,9 @@ public class MySignature {
 
   }
 
+  /*
+   * Generates a pair of keys.
+   */
   public static KeyPair generateKeyPair(long seed) throws Exception {
     Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("RSA");

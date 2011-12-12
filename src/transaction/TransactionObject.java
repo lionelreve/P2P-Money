@@ -9,6 +9,13 @@ import security.MySignature;
 import chord.ChordKey;
 import chord.ChordNode;
 
+/*
+ * An object that represents a transaction.
+ * Normaly only the node of origin can sign
+ * this transaction thanks to its private key.
+ * Nevertheless all the nodes can verify this transaction thanks
+ * to the public key of the node of origin that is bound with its chordKey.
+ */
 public class TransactionObject {
 
 	ChordKey peer=null;
@@ -17,6 +24,9 @@ public class TransactionObject {
 	byte[] signature=null;
 	PublicKey publicKey= null;
 	
+	/*
+	 * Creates a transaction with all the parameters given. 
+	 */
 	public TransactionObject(ChordKey peer, ChordKey from, double value, byte[] signature, PublicKey publicKey){
 		this.peer=peer;
 		this.from=from;
@@ -25,6 +35,11 @@ public class TransactionObject {
 		this.publicKey= publicKey;
 	}
 	
+	/*
+	 * Creates a transaction with a Node of origin,
+	 * the key of the node of destination,
+	 * and the amount of the transaction. 
+	 */
 	public TransactionObject(ChordNode from, ChordKey peer, double value) throws Exception{
 		this.from= (ChordKey) from.getChordKey();
 		this.peer= peer;

@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 import chord.ChordNode;
 
+/*
+ * A wallet to stores the money available for a Node.
+ * Normaly it can be construct again thanks to the private key.
+ */
 public class Wallet implements Serializable {
 
 	private double money=0;
@@ -23,6 +27,10 @@ public class Wallet implements Serializable {
 			return null;
 	}
 	
+	/*
+	 * Create a wallet with a given amount of money.
+	 * @param money : the amount of money.
+	 */
 	public Wallet(double money){
 		if (money>=0)
 			this.money=money;
@@ -33,6 +41,10 @@ public class Wallet implements Serializable {
 		}
 	}
 	
+	/*
+	 * Return true if the wallet contains more than money given.
+	 * @param money : the amount of money. 
+	 */
 	public boolean hasMoney(double money){
 		return this.getMoney()>=money;
 	}
