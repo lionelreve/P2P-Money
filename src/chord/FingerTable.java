@@ -9,6 +9,11 @@ public class FingerTable extends UnicastRemoteObject implements FingerTableInter
 	public static final int MAXFINGERS = 8;
 	ChordInterface[] fingerTable = new ChordInterface[MAXFINGERS];
 	
+	/**
+	 * Initialize fingerTable with cNode
+	 * @param cNode
+	 * @throws RemoteException
+	 */
 	public FingerTable(ChordInterface cNode) throws RemoteException{
 		for(int i=1;i<MAXFINGERS;i++) {
 			fingerTable[i]=cNode;
